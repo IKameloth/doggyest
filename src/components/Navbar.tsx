@@ -1,10 +1,10 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuIcon from '@mui/icons-material/Menu';
 
 interface Props {
-  children: React.ReactNode
+  // children: React.ReactNode
   window?: () => Window
 }
 
@@ -16,7 +16,7 @@ const navItems = [
   }
 ]
 
-const Navbar = ({ children, window }: Props) => {
+const Navbar = ({ window }: Props) => {
   const [mobileOpen, setMobileOpen] = useState<boolean>(false)
 
   const handleToggleDrawer = () => {
@@ -89,10 +89,6 @@ const Navbar = ({ children, window }: Props) => {
           {drawer}
         </Drawer>
       </nav>
-      <Box>
-        <Toolbar />
-        {children}
-      </Box>
     </div>
   );
 }
