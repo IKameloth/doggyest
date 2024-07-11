@@ -1,9 +1,23 @@
-import { Grid, IconButton, Card, CardMedia } from '@mui/material'
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { fetchGetPets } from '../redux/slices/petsSlice';
+import { Grid, IconButton, Card, CardMedia, Skeleton } from '@mui/material'
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const ImageViewer = () => {
+  const dispatch = useAppDispatch()
+  const { pets, isLoading } = useAppSelector((state) => state.pets)
+
+  useEffect(() => {
+    if (!pets.status.length) {
+      dispatch(fetchGetPets())
+    }
+  }, [])
+
+  console.log({ pets })
+
   return (
     <>
       <Grid container justifyContent="center" alignItems="center" spacing={10} mb={5} mt={5}>
@@ -14,11 +28,15 @@ const ImageViewer = () => {
         </Grid>
         <Grid item>
           <Card sx={{ maxWidth: 345 }}>
-            <CardMedia
-              sx={{ height: 140, width: 140 }}
-              image="/vite.svg"
-              title="picture-dogs"
-            />
+            {isLoading ? (
+              <Skeleton variant="rectangular" width={140} height={140} />
+            ) : (
+              <CardMedia
+                sx={{ height: 140, width: 140 }}
+                image={pets.message!}
+                title="picture-dogs"
+              />
+            )}
           </Card>
         </Grid>
         <Grid item>

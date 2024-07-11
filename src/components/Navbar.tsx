@@ -11,6 +11,7 @@ interface Props {
 const drawerWidth = 240
 const navItems = [
   {
+    id: 1,
     text: "Favorites",
     icon: <FavoriteIcon />
   }
@@ -27,7 +28,7 @@ const Navbar = ({ window }: Props) => {
     <Box role="presentation" onClick={handleToggleDrawer}>
       <List>
         {navItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
+          <ListItem key={item.id} disablePadding>
             <ListItemButton>
               <ListItemIcon>
                 {item.icon}
@@ -65,7 +66,7 @@ const Navbar = ({ window }: Props) => {
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <IconButton size="large" aria-label="favorites" color="inherit">
+              <IconButton key={item.id} size="large" aria-label="favorites" color="inherit">
                 {item.icon}
               </IconButton>
             ))}
