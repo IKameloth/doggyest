@@ -6,8 +6,9 @@ import exampleSlice from "./slices/exampleSlice";
 import petsSlice from "./slices/petsSlice";
 
 const persistConfig = {
-  key: 'example-persist-slice',
+  key: 'pets-slice',
   storage,
+  whitelist: ["petsSlice"],
   blacklist: []
 }
 

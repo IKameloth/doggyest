@@ -8,8 +8,20 @@ export type KnownError = {
   code: number | undefined;
 };
 
-const initialState = {
-  pets: { message: "", status: "" },
+export interface InitialStateType {
+  randomPet: {
+    message: string,
+    status: string
+  },
+  isLoading: boolean,
+  isError: boolean,
+  errorMessage: string,
+  isSuccess: boolean,
+  successMessage: string
+}
+
+const initialState: InitialStateType = {
+  randomPet: { message: "", status: "" },
   isLoading: false,
   isError: false,
   errorMessage: "",
@@ -17,7 +29,7 @@ const initialState = {
   successMessage: ""
 }
 
-export const fetchGetPets: any = createAsyncThunk('pets/getPets', async (_, { rejectWithValue }) => {
+export const fetchGetRandomPet: any = createAsyncThunk('pets/getRandomPet', async (_, { rejectWithValue }) => {
   try {
     const response = await AxiosConfig.get('/random')
     return response.data
@@ -38,40 +50,36 @@ const petsSlice = createSlice({
       state = initialState
     },
     cleanErrors(state) {
-      state = {
-        ...state,
-        isError: false,
-        errorMessage: ""
-      }
+      state.isError = false
+      state.errorMessage = ""
     },
     cleanSuccess(state) {
-      state = {
-        ...state,
-        isSuccess: false,
-        successMessage: ""
-      }
+      state.isSuccess = false
+      state.successMessage = ""
     },
-    setPetsList(state, action) {
-      state.pets = action.payload
+    setRandomPet(state, action) {
+      state.randomPet = action.payload
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchGetPets.pending, (state) => {
+    builder.addCase(fetchGetRandomPet.pending, (state) => {
       state.isLoading = true
     })
-      .addCase(fetchGetPets.fulfilled, (state, action) => {
-        state.pets = action.payload,
-          state.isLoading = false
+      .addCase(fetchGetRandomPet.fulfilled, (state, action) => {
+        state.randomPet = action.payload
+        state.isLoading = false
       })
-      .addCase(fetchGetPets.rejected, (state, action) => {
+      .addCase(fetchGetRandomPet.rejected, (state, action) => {
         console.error(
           `%c ${action}`,
           "color: purple; font-size: x-large; background: white"
         );
-
-        state.isError = true,
-          state.errorMessage = "get request error"
-        state.isLoading = false
+        state = {
+          ...state,
+          isError: true,
+          errorMessage: "get request error",
+          isLoading: false
+        }
       })
   }
 })
